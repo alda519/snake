@@ -45,7 +45,6 @@ int main(int argc, char *argv[])
   while(status != EXIT) {
     snake = newSnake(WIDTH/TILE/2, HEIGHT/TILE/2);
     board = newBoard(WIDTH/TILE, HEIGHT/TILE);
-    printf("VYTVORENO\n");
     if(board.b == NULL)
       return 1;
     if(snake.head == NULL)
@@ -97,7 +96,6 @@ int main(int argc, char *argv[])
 
     deleteSnake(snake);
     deleteBoard(board);
-    printf("SMAZANO\n");
   }
 
   SDL_FreeSurface(pics);
@@ -108,8 +106,5 @@ int main(int argc, char *argv[])
 
 /* TODO:
     nacist druhy datak
-    
-    zavirat soubory, zkontrolovat pamet
-    
     vymyslet kresleni zdi
 */
