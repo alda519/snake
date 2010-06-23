@@ -1,12 +1,11 @@
 #include <SDL/SDL.h>
-#include <SDL/SDL_gfxPrimitives.h>
 
 #include "defines.h"
 #include "game.h"
 
 int drawTile(SDL_Surface *screen, TSnakeSegment snake)
 {
-  filledCircleColor(screen, snake.x*TILE+TILE/2, snake.y*TILE+TILE/2, TILE/2-3, 0x0000ffff);
+//  filledCircleColor(screen, snake.x*TILE+TILE/2, snake.y*TILE+TILE/2, TILE/2-3, 0x0000ffff);
   SDL_UpdateRect(screen, snake.x*TILE, snake.y*TILE, TILE, TILE);
   return 1;
 }
@@ -18,8 +17,24 @@ int drawBoard(SDL_Surface *screen, SDL_Surface *data, TBoard board)
   
   for(int i = 0; i < board.h; ++i) {
     for(int j = 0; j < board.w; ++j) {
-      //tile.x = board[i][j]TILE TODO TODO
-      SDL_BlitSurface(data, &tile, screen, &desk);
+      if(board.b[i][j] == WALL) {
+        if(i == 0 || board.b[i-1][j] != WALL) {
+          tile.x = TILE * TILE_U;
+          SDL_BlitSurface(data, &tile, screen, &desk);
+        }
+        if(j == 0 || board.b[i][j-1] != WALL) {
+          tile.x = TILE * TILE_L;
+          SDL_BlitSurface(data, &tile, screen, &desk);
+        }
+        if(i == board.h-1 || board.b[i+1][j] != WALL) {
+          tile.x = TILE * TILE_D;
+          SDL_BlitSurface(data, &tile, screen, &desk);
+        }
+        if(j == board.w-1 || board.b[i][j+1] != WALL) {
+          tile.x = TILE * TILE_R;
+          SDL_BlitSurface(data, &tile, screen, &desk);
+        }
+      }
     }
   }
   return 0;

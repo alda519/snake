@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     fprintf(stderr, "datovy soubor %s nenalezen\n", "snake.bmp");
     return 1;
   }
+  SDL_SetColorKey(pics, SDL_SRCCOLORKEY, 0);
 
   srand(time(NULL));
 

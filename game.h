@@ -16,9 +16,8 @@ typedef enum {
 } ESnake;
 
 typedef enum {
-  TILE_WHOLE,
-  TILE_UP, TILE_LEFT, TILE_DOWN, TILE_RIGHT,
-  TILE_LU, TILE_LD, TILE_RU, TILE_RD, TILE_NIL
+  TILE_NIL, TILE_L, TILE_U, TILE_R, TILE_D,
+  TILE_CLU, TILE_CLD, TILE_CRU, TILE_CRD
 } EWall;
 
 typedef struct t_snake_segment {

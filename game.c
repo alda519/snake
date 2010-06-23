@@ -61,6 +61,29 @@ TBoard newBoard(int w, int h)
 
 // *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
 
+int loadBoard(TBoard board, char *filename)
+{
+  int c;
+  FILE *f = fopen(filename, "r");
+  if(f == NULL)
+    return 0;
+  for(int i = 0; i < board.h; ++i) {
+    for(int j = 0; j < board.w; ++j) {
+      c = fgetc(f);
+      if(c == EOF) {
+        fclose(f);
+        return 0;
+      }
+      board.b[i][j] = c - '0';
+    }
+  }
+
+  fclose(f);
+  return 1;
+}
+
+// *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
 int deleteSnake(TSnake snake)
 {
   TSnakeSegment *s;
