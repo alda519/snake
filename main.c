@@ -26,19 +26,24 @@ int main(int argc, char *argv[])
   }
   SDL_WM_SetCaption("Snake", NULL);
 
-  SDL_Surface *pics = SDL_LoadBMP("snake.bmp");
-  if(pics == NULL) {
-    // TODO freeall
+  SDL_Surface *picSnake = SDL_LoadBMP("snake.bmp");
+  if(picSnake == NULL) {
     fprintf(stderr, "datovy soubor %s nenalezen\n", "snake.bmp");
     return 1;
   }
 
-  SDL_Surface *tiles = SDL_LoadBMP("board.bmp");
-  if(tiles == NULL) {
+  SDL_Surface *picTiles = SDL_LoadBMP("board.bmp");
+  if(picTiles == NULL) {
     fprintf(stderr, "datovy soubor %s nenalezen\n", "board.bmp");
     return 1;
   }
-  SDL_SetColorKey(tiles, SDL_SRCCOLORKEY, 0);
+  SDL_SetColorKey(picTiles, SDL_SRCCOLORKEY, 0);
+  
+  SDL_Surface *picFood = SDL_LoadBMP("food.bmp");
+  if(picFood == NULL) {
+    fprintf(stderr, "datovy soubor %s nenalezen\n", "food.bmp");
+    return 1;
+  }
 
   srand(time(NULL));
 
@@ -59,16 +64,16 @@ int main(int argc, char *argv[])
       return 1; // TODO: lip uklidit
     loadBoard(board, "level0.map");
     SDL_FillRect(screen, NULL, 0);
-    drawBoard(screen, tiles, board);
+    drawBoard(screen, picTiles, board);
 
-    drawSnakeSegment(screen, pics, *snake.head, HEAD_COLOR);
+    drawSnakeSegment(screen, picSnake, *snake.head, HEAD_COLOR);
     SDL_UpdateRect(screen, 0,0,0,0);
     do {
       food.x = rand()%(WIDTH/TILE);
       food.y = rand()%(HEIGHT/TILE);
     } while(board.b[food.y][food.x] != NIL);
     board.b[food.y][food.x] = FOOD;
-    drawTile(screen, food);
+    drawTile(screen, picFood, food);
 
     do {
       dirct = tmpd = getDirection(NOWHERE, NOWHERE);
@@ -84,14 +89,14 @@ int main(int argc, char *argv[])
     next_time = SDL_GetTicks() + TICK_INTERVAL;
 
     while(status == OK) {
-      status =  moveSnake(screen, pics, board, &snake, dirct); // EDITNG
+      status =  moveSnake(screen, picSnake, board, &snake, dirct);
       if(status == EATING) {
         do {
           food.x = rand()%(WIDTH/TILE);
           food.y = rand()%(HEIGHT/TILE);
         } while(board.b[food.y][food.x] != NIL);
         board.b[food.y][food.x] = FOOD;
-        drawTile(screen, food);
+        drawTile(screen, picFood, food);
         status = OK;
       }
 
@@ -102,20 +107,17 @@ int main(int argc, char *argv[])
       if(tmpd.dx == tmpd.dy)
         status = EXIT;
       dirct = tmpd;
-      next_time = SDL_GetTicks() + TICK_INTERVAL;  //next_time += TICK_INTERVAL;
+      next_time = SDL_GetTicks() + TICK_INTERVAL;
     }
 
     deleteSnake(snake);
     deleteBoard(board);
   }
 
-  SDL_FreeSurface(pics);
+  SDL_FreeSurface(picSnake);
+  SDL_FreeSurface(picTiles);
+  SDL_FreeSurface(picFood);
   SDL_FreeSurface(screen);
   SDL_Quit();
   return 0;
 }
-
-/* TODO:
-    nacist druhy datak
-    vymyslet kresleni zdi
-*/

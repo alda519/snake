@@ -3,9 +3,11 @@
 #include "defines.h"
 #include "game.h"
 
-int drawTile(SDL_Surface *screen, TSnakeSegment snake)
+int drawTile(SDL_Surface *screen, SDL_Surface *data, TSnakeSegment snake)
 {
-//  filledCircleColor(screen, snake.x*TILE+TILE/2, snake.y*TILE+TILE/2, TILE/2-3, 0x0000ffff);
+  SDL_Rect tile = {.x = rand()%6 * TILE, .y = 0, .w = TILE, .h = TILE};
+  SDL_Rect desk =  {.x = snake.x*TILE, .y = snake.y*TILE, .w = TILE, .h = TILE};
+  SDL_BlitSurface(data, &tile, screen, &desk);
   SDL_UpdateRect(screen, snake.x*TILE, snake.y*TILE, TILE, TILE);
   return 1;
 }
