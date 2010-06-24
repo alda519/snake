@@ -17,6 +17,8 @@ int drawBoard(SDL_Surface *screen, SDL_Surface *data, TBoard board)
   
   for(int i = 0; i < board.h; ++i) {
     for(int j = 0; j < board.w; ++j) {
+      desk.x = j * TILE;
+      desk.y = i * TILE;
       if(board.b[i][j] == WALL) {
         if(i == 0 || board.b[i-1][j] != WALL) {
           tile.x = TILE * TILE_U;
@@ -32,6 +34,23 @@ int drawBoard(SDL_Surface *screen, SDL_Surface *data, TBoard board)
         }
         if(j == board.w-1 || board.b[i][j+1] != WALL) {
           tile.x = TILE * TILE_R;
+          SDL_BlitSurface(data, &tile, screen, &desk);
+        }
+
+        if(i+1 < board.h && j+1 < board.w && board.b[i+1][j+1] != WALL && board.b[i+1][j] == WALL && board.b[i][j+1] == WALL) {
+          tile.x = TILE * TILE_CRD;
+          SDL_BlitSurface(data, &tile, screen, &desk);
+        }
+        if(i > 0 && j+1 < board.w && board.b[i-1][j+1] != WALL && board.b[i-1][j] == WALL && board.b[i][j+1] == WALL) {
+          tile.x = TILE * TILE_CRU;
+          SDL_BlitSurface(data, &tile, screen, &desk);
+        }
+        if(i+1 < board.h && j > 0 && board.b[i+1][j-1] != WALL && board.b[i+1][j] == WALL && board.b[i][j-1] == WALL) {
+          tile.x = TILE * TILE_CLD;
+          SDL_BlitSurface(data, &tile, screen, &desk);
+        }
+        if(i > 0 && j > 0 && board.b[i-1][j-1] != WALL && board.b[i-1][j] == WALL && board.b[i][j-1] == WALL) {
+          tile.x = TILE * TILE_CLU;
           SDL_BlitSurface(data, &tile, screen, &desk);
         }
       }
