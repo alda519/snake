@@ -74,7 +74,12 @@ int loadBoard(TBoard board, char *filename)
         fclose(f);
         return 0;
       }
-      board.b[i][j] = c - '0';
+      if(c == '\n')
+        continue;
+      else if(c == '#')
+        board.b[i][j] = WALL;
+      else
+        board.b[i][j] = NIL;
     }
   }
 

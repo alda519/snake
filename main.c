@@ -32,7 +32,13 @@ int main(int argc, char *argv[])
     fprintf(stderr, "datovy soubor %s nenalezen\n", "snake.bmp");
     return 1;
   }
-  SDL_SetColorKey(pics, SDL_SRCCOLORKEY, 0);
+
+  SDL_Surface *tiles = SDL_LoadBMP("board.bmp");
+  if(tiles == NULL) {
+    fprintf(stderr, "datovy soubor %s nenalezen\n", "board.bmp");
+    return 1;
+  }
+  SDL_SetColorKey(tiles, SDL_SRCCOLORKEY, 0);
 
   srand(time(NULL));
 
@@ -45,12 +51,16 @@ int main(int argc, char *argv[])
 
   while(status != EXIT) {
     snake = newSnake(WIDTH/TILE/2, HEIGHT/TILE/2);
+    if(snake.head == NULL)
+      return 1; // TODO lip uklidit
+
     board = newBoard(WIDTH/TILE, HEIGHT/TILE);
     if(board.b == NULL)
-      return 1;
-    if(snake.head == NULL)
-      return 1;
+      return 1; // TODO: lip uklidit
+    loadBoard(board, "level0.map");
     SDL_FillRect(screen, NULL, 0);
+    drawBoard(screen, tiles, board);
+
     drawSnakeSegment(screen, pics, *snake.head, HEAD_COLOR);
     SDL_UpdateRect(screen, 0,0,0,0);
     do {

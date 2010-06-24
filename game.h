@@ -52,4 +52,6 @@ int moveSnake(SDL_Surface *, SDL_Surface *, TBoard, TSnake*, TDirection); // EDI
 
 TDirection getDirection(TDirection, TDirection);
 
+int loadBoard(TBoard, char *);
+
 #endif
